@@ -1,5 +1,7 @@
 import { useState } from "react";
 import CellContext from "./CellContext";
+import useSound from "use-sound";
+import sound from "/sounds/move-self.mp3";
 
 const CellContextProvider = ({ children }) => {
   const movementUp = [
@@ -22,6 +24,8 @@ const CellContextProvider = ({ children }) => {
   const [highlightedCells, setHighlightedCells] = useState([]);
 
   const [selectedPiece, setSelectedPiece] = useState(null);
+
+  const [play] = useSound(sound);
 
   const handleClick = (
     cell,
@@ -115,11 +119,13 @@ const CellContextProvider = ({ children }) => {
         setHighlightedCells([]);
         setIsSilverTurn(!isSilverTurn);
         checkGameOver(newBoard, setGameOver, setWin);
+        play();
       } else {
         setSelectedPiece(null);
         setHighlightedCells([]);
       }
     }
+    play();
   };
 
   const checkGameOver = (board, setGameOver, setWin) => {
